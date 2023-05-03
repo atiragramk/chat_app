@@ -5,19 +5,38 @@ import {
   StyledMessage,
   StyledMessageWrapper,
 } from "./style";
+import { MessageData } from "./reducer";
+import { useSelector } from "react-redux";
+import { authStateSelector } from "../../store/auth/selector";
+import { User } from "firebase/auth";
+import { chatInfoSelector } from "./selector";
 
 type MessageProps = {
   info?: string;
-  children: string;
+  // children: string;
+  data: MessageData;
 };
-export const Message: React.FC<MessageProps> = ({ info, children }) => {
+export const Message: React.FC<MessageProps> = ({ info, data }) => {
+  const { user } = useSelector(authStateSelector);
+  const { userInfo } = useSelector(chatInfoSelector);
+  const { uid, photoURL } = user as User;
   return (
     <Stack sx={{ backgroundColor: "neutral.main" }}>
-      <StyledMessageWrapper about={info}>
-        <StyledAvatar />
+      <StyledMessageWrapper about={data.senderId === uid ? "owner" : ""}>
+        <StyledAvatar
+          src={data.senderId === uid ? photoURL! : userInfo?.photoURL}
+        />
         <Stack gap={1} paddingY={1} alignItems={info ? "end" : ""}>
-          <StyledMessage about={info}>{children}</StyledMessage>
-          <StyledAttachImg src="https://images.unsplash.com/photo-1682166811672-361327c6770d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=464&q=80" />
+          {data.text && (
+            <StyledMessage about={data.senderId === uid ? "owner" : ""}>
+              {data.text}
+            </StyledMessage>
+          )}
+          {data.img && (
+            <>
+              <StyledAttachImg src={data.img} />
+            </>
+          )}
         </Stack>
       </StyledMessageWrapper>
       {/* <Typography variant="subtitle2">just now</Typography> */}

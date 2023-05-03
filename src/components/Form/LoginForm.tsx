@@ -9,6 +9,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase";
 
 import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const validationSchema = yup.object({
   email: yup
@@ -27,6 +28,7 @@ type FormData = {
 };
 
 export const LoginForm = () => {
+  const navigate = useNavigate();
   const onSubmit = async (
     data: Partial<FormData>,
     helpers: FormikHelpers<FormData>
@@ -36,6 +38,7 @@ export const LoginForm = () => {
       const user = await signInWithEmailAndPassword(auth, email!, password!);
       toast("You were login succesfully", { icon: "💅" });
       helpers.resetForm();
+      navigate("/");
     } catch (error) {
       toast.error((error as Error).message);
     }

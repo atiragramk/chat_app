@@ -1,4 +1,4 @@
-import { Box, TextField, Typography, styled } from "@mui/material";
+import { Box, IconButton, TextField, Typography, styled } from "@mui/material";
 import { Stack } from "@mui/system";
 
 export const StyledBox = styled(Box)`
@@ -38,4 +38,10 @@ export const StyledUserChat = styled(Stack)`
 
 export const StyledMessage = styled(Typography)`
   color: ${(props) => props.theme.palette.info.main};
+`;
+
+export const StyledLogOutButton = styled(IconButton)`
+  :hover {
+    color: ${(props) => props.theme.palette.primary.light};
+  }
 `;

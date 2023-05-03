@@ -11,6 +11,7 @@ import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { doc, setDoc } from "firebase/firestore";
 
 import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const validationSchema = yup.object({
   name: yup
@@ -42,6 +43,7 @@ type FormData = {
 };
 
 export const RegisterForm = () => {
+  const navigate = useNavigate();
   const onSubmit = async (
     data: Partial<FormData>,
     helpers: FormikHelpers<FormData>
@@ -53,8 +55,6 @@ export const RegisterForm = () => {
         email!,
         password!
       );
-      toast("You were registered succesfully", { icon: "💅" });
-      helpers.resetForm();
       const storageRef = ref(
         storage,
         `avatars/${user.uid}/${attachment?.name}`
@@ -74,7 +74,11 @@ export const RegisterForm = () => {
             email,
             photoURL: downloadURL,
           });
+          await setDoc(doc(db, "userChats", user.uid), {});
         });
+        toast("You were registered succesfully", { icon: "💅" });
+        helpers.resetForm();
+        navigate("/login");
       });
     } catch (error) {
       toast.error((error as Error).message);
@@ -180,6 +184,11 @@ export const RegisterForm = () => {
         />
         Add an avatar
       </Button>
+      {formik.values.attachment?.name && (
+        <Typography color="primary">
+          {formik.values.attachment?.name}
+        </Typography>
+      )}
       <Button color="primary" variant="contained" type="submit">
         Sign up
       </Button>

@@ -39,6 +39,10 @@ export const StyledMessageWrapper = styled(Stack)`
   align-items: flex-start;
   gap: 10px;
   padding: 10px;
+  .css-43cs0v-MuiStack-root {
+    align-items: ${(props) =>
+      props.about === "owner" ? "flex-end" : "flex-start"};
+  }
 `;
 
 export const StyledAttachImg = styled("img")`
@@ -46,6 +50,7 @@ export const StyledAttachImg = styled("img")`
 `;
 
 export const StyledMessagesWrapper = styled(Stack)`
+  background-color: ${(props) => props.theme.palette.neutral.main};
   height: calc(100% - 120px);
   overflow-y: scroll;
   ::-webkit-scrollbar {
@@ -62,7 +67,7 @@ export const StyledMessage = styled(Typography)`
     props.about === "owner"
       ? props.theme.palette.primary.light
       : props.theme.palette.primary.dark};
-  width: fit-content;
+  min-width: fit-content;
   max-width: 90%;
   padding: 8px 16px;
   border-radius: ${(props) =>
