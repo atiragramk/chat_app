@@ -24,6 +24,16 @@ export const StyledSearchBar = styled(TextField)`
   .css-nz481w-MuiInputBase-input-MuiInput-input {
     color: ${(props) => props.theme.palette.info.main};
   }
+  .css-18swyve-MuiInputBase-root-MuiInput-root:hover:not(
+      .Mui-disabled,
+      .Mui-error
+    ):before {
+    border-color: ${(props) => props.theme.palette.neutral.main};
+  }
+  .css-18swyve-MuiInputBase-root-MuiInput-root:after {
+    border-color: ${(props) => props.theme.palette.neutral.main};
+    border: none;
+  }
 `;
 
 export const StyledUserChat = styled(Stack)`

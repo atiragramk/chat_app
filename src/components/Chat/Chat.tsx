@@ -1,23 +1,34 @@
-import { StyledBox, StyledMessagesWrapper } from "./style";
+import {
+  StyledBox,
+  StyledChatAbsenceText,
+  StyledMessagesWrapper,
+} from "./style";
 import { ChatInfo } from "./ChatInfo";
 import { Message } from "./Message";
 import { Input } from "./Input";
 import { chatInfoSelector } from "./selector";
 import { useDispatch, useSelector } from "react-redux";
-import { Typography } from "@mui/material";
+import { LinearProgress, Typography } from "@mui/material";
 import { useEffect } from "react";
 import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "../../firebase";
-import { chatMessagesSetAction } from "./reducer";
+import {
+  chatMessagesInProgressAction,
+  chatMessagesSetAction,
+  chatMessagesSuccessAction,
+} from "./reducer";
 
 export const Chat = () => {
-  const { userInfo, combinedId, messages } = useSelector(chatInfoSelector);
+  const { userInfo, combinedId, messages, loading } =
+    useSelector(chatInfoSelector);
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (combinedId) {
       const unSub = onSnapshot(doc(db, "chats", combinedId), (doc) => {
+        dispatch(chatMessagesInProgressAction());
         doc.exists() && dispatch(chatMessagesSetAction(doc.data().messages));
+        dispatch(chatMessagesSuccessAction());
       });
 
       return () => {
@@ -28,25 +39,22 @@ export const Chat = () => {
   return (
     <StyledBox>
       <ChatInfo name={userInfo?.name} />
-      <StyledMessagesWrapper>
+      <StyledMessagesWrapper about={userInfo ? "user" : ""}>
+        {loading && <LinearProgress />}
         {userInfo ? (
           <>
-            {messages?.map((message) => {
-              return <Message data={message} />;
-            })}
-            {/* <Message info="owner">hello</Message>
-            <Message>how are youuuuu</Message>
-            <Message>hello</Message>
-            <Message info="owner">sosissskaa</Message>
-            <Message>hello</Message> */}
+            {!loading &&
+              messages?.map((message) => {
+                return <Message key={message.id} data={message} />;
+              })}
           </>
         ) : (
-          <Typography padding={2}>
+          <StyledChatAbsenceText>
             There is no messages. Select chat to start messaging
-          </Typography>
+          </StyledChatAbsenceText>
         )}
       </StyledMessagesWrapper>
-      <Input />
+      {userInfo && <Input />}
     </StyledBox>
   );
 };

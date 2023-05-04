@@ -51,7 +51,8 @@ export const StyledAttachImg = styled("img")`
 
 export const StyledMessagesWrapper = styled(Stack)`
   background-color: ${(props) => props.theme.palette.neutral.main};
-  height: calc(100% - 120px);
+  height: ${(props) =>
+    props.about === "user" ? `calc(100% - 120px)` : "100%"};
   overflow-y: scroll;
   ::-webkit-scrollbar {
     width: 4px;
@@ -85,4 +86,10 @@ export const StyledTextField = styled(TextField)`
 export const StyledInputWrapper = styled(Stack)`
   background-color: ${(props) => props.theme.palette.info.main};
   padding: 12px;
+`;
+
+export const StyledChatAbsenceText = styled(Typography)`
+  text-align: center;
+  font-style: italic;
+  padding: 16px;
 `;

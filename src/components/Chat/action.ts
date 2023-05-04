@@ -16,3 +16,11 @@ export const chatMessagesSet = (
 ) => {
   state.messages = action.payload;
 };
+
+export const chatMessagesInProgress = (state: Chat) => {
+  state.loading = true;
+};
+
+export const chatMessagesSuccess = (state: Chat) => {
+  state.loading = false;
+};

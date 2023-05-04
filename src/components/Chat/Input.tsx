@@ -19,7 +19,6 @@ import { User } from "firebase/auth";
 import { uid as randomID } from "uid";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { chatInfoSelector } from "./selector";
-import { chatsStateSelector } from "../Sidebar/selector";
 
 export const Input = () => {
   const [text, setText] = useState("");
@@ -69,8 +68,6 @@ export const Input = () => {
       [`${combinedId}.lastMessage`]: text,
     });
   };
-
-  console.log(file);
   return (
     <StyledInputWrapper direction="row" alignItems="center">
       <StyledTextField
@@ -80,7 +77,7 @@ export const Input = () => {
         onKeyDown={(event) => event.code === "Enter" && handleSend()}
       />
       <Stack direction="row" gap={1}>
-        <IconButton
+        {/* <IconButton
           disabled
           color="primary"
           aria-label="upload file"
@@ -88,7 +85,7 @@ export const Input = () => {
         >
           <input hidden accept=".pdf,.doc,.docx,image/*,audio/*" type="file" />
           <AttachFileIcon fontSize="small" />
-        </IconButton>
+        </IconButton> */}
         <IconButton
           color="primary"
           aria-label="upload picture"

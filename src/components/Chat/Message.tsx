@@ -10,23 +10,32 @@ import { useSelector } from "react-redux";
 import { authStateSelector } from "../../store/auth/selector";
 import { User } from "firebase/auth";
 import { chatInfoSelector } from "./selector";
+import { useEffect, useRef } from "react";
 
 type MessageProps = {
-  info?: string;
-  // children: string;
   data: MessageData;
 };
-export const Message: React.FC<MessageProps> = ({ info, data }) => {
+export const Message: React.FC<MessageProps> = ({ data }) => {
   const { user } = useSelector(authStateSelector);
   const { userInfo } = useSelector(chatInfoSelector);
   const { uid, photoURL } = user as User;
+
+  const ref = useRef<null | HTMLDivElement>(null);
+
+  useEffect(() => {
+    ref.current?.scrollIntoView({ behavior: "smooth" });
+  }, [data]);
   return (
-    <Stack sx={{ backgroundColor: "neutral.main" }}>
+    <Stack ref={ref} sx={{ backgroundColor: "neutral.main" }}>
       <StyledMessageWrapper about={data.senderId === uid ? "owner" : ""}>
         <StyledAvatar
           src={data.senderId === uid ? photoURL! : userInfo?.photoURL}
         />
-        <Stack gap={1} paddingY={1} alignItems={info ? "end" : ""}>
+        <Stack
+          gap={1}
+          paddingY={1}
+          alignItems={data.senderId === uid ? "end" : ""}
+        >
           {data.text && (
             <StyledMessage about={data.senderId === uid ? "owner" : ""}>
               {data.text}

@@ -1,4 +1,10 @@
-import { Avatar, InputAdornment, Typography } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  InputAdornment,
+  LinearProgress,
+  Typography,
+} from "@mui/material";
 import { Stack } from "@mui/system";
 import {
   StyledBox,
@@ -8,7 +14,9 @@ import {
 } from "./style";
 import LogoutIcon from "@mui/icons-material/Logout";
 import SearchIcon from "@mui/icons-material/Search";
+
 import { UserChat } from "./UserChat";
+
 import { User, signOut } from "firebase/auth";
 import {
   DocumentData,
@@ -28,16 +36,21 @@ import { auth, db } from "../../firebase";
 import { useDispatch, useSelector } from "react-redux";
 import { authStateCheckAction } from "../../store/auth/reducer";
 import { authStateSelector } from "../../store/auth/selector";
-import { toast } from "react-hot-toast";
 import { useEffect, useState } from "react";
-import { sidebarChatListCheckAction } from "./reducer";
+import {
+  searchErrorAction,
+  searchInProgressAction,
+  searchSuccessAction,
+  sidebarChatListCheckAction,
+} from "./reducer";
 import { chatsStateSelector } from "./selector";
 import { chatInfoSetAction } from "../Chat/reducer";
+import { toast } from "react-hot-toast";
 
 export const Sidebar = () => {
   const dispatch = useDispatch();
   const { user } = useSelector(authStateSelector);
-  const { chatsData } = useSelector(chatsStateSelector);
+  const { chatsData, loading, error } = useSelector(chatsStateSelector);
 
   const [searchUser, setSearchUser] = useState<DocumentData>();
   const [userName, setUserName] = useState("");
@@ -47,7 +60,6 @@ export const Sidebar = () => {
   useEffect(() => {
     const unSub = onSnapshot(doc(db, "userChats", uid), (doc) => {
       dispatch(sidebarChatListCheckAction(doc.data()));
-      console.log(doc.data());
     });
     return () => {
       unSub();
@@ -70,14 +82,16 @@ export const Sidebar = () => {
     try {
       setSearchUser(undefined);
       setUserName(event.target.value);
+      dispatch(searchInProgressAction());
       const usersRef = collection(db, "users");
       const q = query(usersRef, where("name", "==", event.target.value));
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach((doc) => {
         setSearchUser(doc.data());
       });
+      dispatch(searchSuccessAction());
     } catch (error) {
-      console.error(error);
+      dispatch(searchErrorAction());
     }
   };
 
@@ -145,6 +159,7 @@ export const Sidebar = () => {
             ),
           }}
         />
+        {loading && <LinearProgress />}
         {searchUser && (
           <>
             <UserChat
@@ -153,22 +168,25 @@ export const Sidebar = () => {
               name={searchUser.name}
               id={searchUser?.uid}
             />
+            <Box sx={{ borderBottom: 2, borderColor: "primary.light" }} />
           </>
         )}
         {chatsData &&
-          Object.entries(chatsData).map((chat) => {
-            const { photoURL, name, uid } = chat[1].userInfo;
-            return (
-              <UserChat
-                key={chat[0]}
-                text={chat[1].lastMessage}
-                photo={photoURL}
-                name={name}
-                id={uid}
-                onSelect={handleSelect}
-              />
-            );
-          })}
+          Object.entries(chatsData)
+            .sort((a, b) => b[1].date - a[1].date)
+            .map((chat) => {
+              const { photoURL, name, uid } = chat[1].userInfo;
+              return (
+                <UserChat
+                  key={chat[0]}
+                  text={chat[1].lastMessage}
+                  photo={photoURL}
+                  name={name}
+                  id={uid}
+                  onSelect={handleSelect}
+                />
+              );
+            })}
       </Stack>
     </StyledBox>
   );
