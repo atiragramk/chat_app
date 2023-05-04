@@ -1,7 +1,7 @@
 {
   "name": "chat-app",
   "version": "0.1.0",
-  "homepage": "https://atiragramk.github.io/chat-app/",
+  "homepage": "https://atiragramk.github.io/chat_app/",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.10.5",
@@ -32,8 +32,7 @@
     "yup": "^0.32.11"
   },
   "scripts": {
-
-    "start": "serve -s build",
+    "start": "react-scripts start",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
     "build": "react-scripts build",
@@ -61,6 +60,7 @@
   "devDependencies": {
     "@types/redux-persist": "^4.3.1",
     "gh-pages": "^5.0.0",
-    "redux-devtools-extension": "^2.13.9"
+    "redux-devtools-extension": "^2.13.9",
+    "react-scripts": "^5.0.1"
   }
 }

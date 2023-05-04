@@ -10,6 +10,7 @@ import {
 
 export const StyledBox = styled(Box)`
   flex: 2;
+  height: 100%;
 `;
 
 export const StyledChatInfoWrapper = styled(Stack)`
@@ -39,10 +40,6 @@ export const StyledMessageWrapper = styled(Stack)`
   align-items: flex-start;
   gap: 10px;
   padding: 10px;
-  .css-43cs0v-MuiStack-root {
-    align-items: ${(props) =>
-      props.about === "owner" ? "flex-end" : "flex-start"};
-  }
 `;
 
 export const StyledAttachImg = styled("img")`
@@ -53,6 +50,7 @@ export const StyledMessagesWrapper = styled(Stack)`
   background-color: ${(props) => props.theme.palette.neutral.main};
   height: ${(props) =>
     props.about === "user" ? `calc(100% - 120px)` : "100%"};
+
   overflow-y: scroll;
   ::-webkit-scrollbar {
     width: 4px;
@@ -78,14 +76,12 @@ export const StyledMessage = styled(Typography)`
 
 export const StyledTextField = styled(TextField)`
   flex: 2;
-  .css-1m8wpkr-MuiInputBase-root-MuiOutlinedInput-root {
-    height: 40px;
-  }
 `;
 
 export const StyledInputWrapper = styled(Stack)`
   background-color: ${(props) => props.theme.palette.info.main};
-  padding: 12px;
+  padding: 10px;
+  border-radius: 0px 5px 5px 0;
 `;
 
 export const StyledChatAbsenceText = styled(Typography)`

@@ -149,12 +149,13 @@ export const Sidebar = () => {
           size="small"
           variant="standard"
           fullWidth
+          sx={{ input: { color: "primary.contrastText" } }}
           onChange={handleSearchUser}
           value={userName}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
-                <SearchIcon />
+                <SearchIcon color="primary" />
               </InputAdornment>
             ),
           }}

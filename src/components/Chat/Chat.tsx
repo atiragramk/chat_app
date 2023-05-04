@@ -8,7 +8,7 @@ import { Message } from "./Message";
 import { Input } from "./Input";
 import { chatInfoSelector } from "./selector";
 import { useDispatch, useSelector } from "react-redux";
-import { LinearProgress, Typography } from "@mui/material";
+import { LinearProgress } from "@mui/material";
 import { useEffect } from "react";
 import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "../../firebase";

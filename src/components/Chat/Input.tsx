@@ -71,21 +71,13 @@ export const Input = () => {
   return (
     <StyledInputWrapper direction="row" alignItems="center">
       <StyledTextField
+        size="small"
         placeholder="Write a message..."
         onChange={(event) => setText(event.target.value)}
         value={text}
         onKeyDown={(event) => event.code === "Enter" && handleSend()}
       />
       <Stack direction="row" gap={1}>
-        {/* <IconButton
-          disabled
-          color="primary"
-          aria-label="upload file"
-          component="label"
-        >
-          <input hidden accept=".pdf,.doc,.docx,image/*,audio/*" type="file" />
-          <AttachFileIcon fontSize="small" />
-        </IconButton> */}
         <IconButton
           color="primary"
           aria-label="upload picture"

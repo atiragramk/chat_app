@@ -29,7 +29,7 @@ function App() {
     });
   }, [user, dispatch]);
   return (
-    <Router>
+    <Router basename="/chat_app">
       <Routes>
         <Route path="/">
           <Route
