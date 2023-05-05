@@ -8,8 +8,6 @@ Access to the app at [Chat App](https://atiragramk.github.io/chat_app)
 
 Chat App allows you to create an account with display name and avatar, search and chat people inside the app.
 
-App also allows you to sign up and save list of your favourite spaceships in your profile.
-
 ## Technologies
 
 App was created with [Create React App](https://github.com/facebook/create-react-app).
